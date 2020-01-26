@@ -32,7 +32,7 @@ function delete_anti_adblock() {
     var element_to_delete = format_path(iter);
     while(element_to_delete != null && element_to_delete != undefined) {
         var element_id = element_to_delete.id.toString();
-        if(test_regex(element_id)) { //should probably do this with regex instead
+        if(test_regex(element_id)) { 
             console.log("Removed popup: " + element_id);
             element_to_delete.remove();
             should_run = false;
