@@ -13,17 +13,30 @@ function get_element_by_xpath(path) {
   return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 }
 
+function format_path(num) {
+    var path = "/html/body/div[" + num.toString() + "]";
+    console.log(path);
+    return get_element_by_xpath(path);
+}
+
 function delete_anti_adblock() {
     if(!should_run) {
         return;
     }
 
-    var element_to_delete = get_element_by_xpath("/html/body/div[9]");
-    if(element_to_delete != null)
-    {
-        console.log("Removed popup.");
-        element_to_delete.remove();
-        should_run = false;
+    var iter = 1;
+    var element_to_delete = format_path(iter);
+    while(element_to_delete != null && element_to_delete != undefined) {
+        var element_id = element_to_delete.id.toString();
+        console.log(element_id);
+        if(element_id.includes("-") && !element_id.includes("sticky") && !element_id.includes("row") && !element_id.includes("div")) { //should probably do this with regex instead
+            console.log("Removed popup: " + element_id);
+            element_to_delete.remove();
+            should_run = false;
+            return;
+        }
+        iter = iter + 1;
+        element_to_delete = format_path(iter);
     }
 }
 
